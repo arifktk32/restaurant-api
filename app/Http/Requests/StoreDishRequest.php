@@ -12,7 +12,7 @@ class StoreDishRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create', Dish::class);
     }
 
     /**

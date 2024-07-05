@@ -29,7 +29,8 @@ class DishPolicy
      */
     public function create(User $user): bool
     {
-        //
+        // Only a logged in user can creae a dish
+        return $user != null;
     }
 
     /**
