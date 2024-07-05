@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Auth;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;

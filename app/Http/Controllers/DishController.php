@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Dish;
 use App\Http\Requests\StoreDishRequest;
 use App\Http\Requests\UpdateDishRequest;
+use App\Http\Resources\DishResource;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DishController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -21,7 +27,27 @@ class DishController extends Controller
      */
     public function store(StoreDishRequest $request)
     {
-        //
+        $this->authorize('create', Dish::class);
+
+        DB::beginTransaction();
+
+        try {
+            $dish = $request->user()
+                ->dishes()
+                ->create($request->validated());
+            
+            DB::commit();
+
+            return new DishResource($dish);
+        } catch(\Exception $e)  {
+            DB::rollBack();
+
+            Log::error("Error creating the dish: {$e->getMessage()}");
+
+            return response()->json([
+                'error' => 'Error creating the dish.',
+            ], 500);
+        }
     }
 
     /**
