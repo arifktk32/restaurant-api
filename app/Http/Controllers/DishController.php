@@ -6,7 +6,10 @@ use App\Models\Dish;
 use App\Http\Requests\StoreDishRequest;
 use App\Http\Requests\UpdateDishRequest;
 use App\Http\Resources\DishResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -25,7 +28,7 @@ class DishController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDishRequest $request)
+    public function store(StoreDishRequest $request): JsonResource|JsonResponse
     {
         $this->authorize('create', Dish::class);
 
@@ -53,9 +56,21 @@ class DishController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dish $dish)
+    public function show($id): JsonResource|JsonResponse
     {
-        //
+        try {
+            $dish = Dish::findOrFail($id);
+    
+            return new DishResource($dish);
+        } catch (ModelNotFoundException $e) {
+            Log::error("DishController::show() A Dish with the specified ID was not found.", [
+                'message' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'error' => 'Dish not found.'
+            ], 404);
+        }
     }
 
     /**
