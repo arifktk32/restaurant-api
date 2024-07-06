@@ -15,7 +15,7 @@ beforeEach(function () {
     ]);
 });
 
-it('can log in with valid credentials', function () {
+it('ensures a user can log in with valid credentials', function () {
     $response = $this->postJson('/api/auth/login', [
         'email' => $this->user->email,
         'password' => 'password',
@@ -29,7 +29,7 @@ it('can log in with valid credentials', function () {
     ]);
 });
 
-it('cannot log in with invalid credentials', function () {
+it('ensures a user can not log in with invalid credentials', function () {
     $response = $this->postJson('/api/auth/login', [
         'email' => $this->user->email,
         'password' => 'wrongpassword',

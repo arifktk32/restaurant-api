@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Dish;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tests\Traits\AuthHelper;
 
 uses(RefreshDatabase::class);
