@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchDishesRequest;
 use App\Models\Dish;
 use App\Http\Requests\StoreDishRequest;
 use App\Http\Requests\UpdateDishRequest;
@@ -21,9 +22,19 @@ class DishController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): ResourceCollection
+    public function index(SearchDishesRequest $request): ResourceCollection
     {
-        return DishResource::collection(Dish::paginate());
+        $query = Dish::query();
+
+        if($request->filled('name')) {
+            $query->where('name', 'like', "%{$request->input('name')}%");
+        }
+
+        if($request->filled('description')) {
+            $query->where('description', 'like', "%{$request->input('description')}%");
+        }
+
+        return DishResource::collection($query->paginate());
     }
 
     /**
