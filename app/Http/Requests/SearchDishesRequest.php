@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Dish;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SearchDishesRequest extends FormRequest
@@ -11,7 +12,7 @@ class SearchDishesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('viewAny', Dish::class);
     }
 
     /**

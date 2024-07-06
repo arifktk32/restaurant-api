@@ -13,7 +13,8 @@ class DishPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        // Only a logged in user can view a dish
+        return $user != null;
     }
 
     /**
@@ -21,7 +22,8 @@ class DishPolicy
      */
     public function view(User $user, Dish $dish): bool
     {
-        //
+        // Only a logged in user can view a dish
+        return $user != null;
     }
 
     /**
