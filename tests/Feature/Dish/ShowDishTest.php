@@ -4,11 +4,9 @@ namespace Tests\Dish;
 
 use App\Models\Dish;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\Traits\AuthHelper;
 
-uses(RefreshDatabase::class);
 uses(AuthHelper::class);
 
 beforeEach(function() {

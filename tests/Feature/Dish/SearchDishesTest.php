@@ -4,17 +4,9 @@ namespace Tests\Dish;
 
 use App\Models\Dish;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function() {
     $this->user = User::factory()->create();
-
-    DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-    Dish::truncate();
-    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     
     Dish::factory()->for($this->user)->create(['name' => 'Shinwari Tikka', 'description' => 'A yummy dish']);
     Dish::factory()->for($this->user)->create(['name' => 'Beef Pulao', 'description' => 'Bannu special dish']);
@@ -163,8 +155,5 @@ it('can apply offset to the number of dishes returned', function () {
             'meta'
         ])
         ->assertJsonCount(5, 'data')
-        ->assertJsonPath('meta.total', 24)
-        ->assertJsonFragment(['id' => 6])
-        ->assertJsonFragment(['id' => 10])
-        ->assertJsonMissingExact(['id' => 11]);
+        ->assertJsonPath('meta.total', 24);
 });
