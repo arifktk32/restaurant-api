@@ -16,4 +16,5 @@ Route::group([
 
 Route::middleware(['auth:api', 'throttle:dishes'])->group(function () {
     Route::apiResource('dishes', DishController::class)->names('dishes');
+    Route::post('dishes/{dish}/rate', [DishController::class, 'rate'])->name('dishes.rate');
 });

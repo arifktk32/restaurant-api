@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RateDishRequest;
 use App\Http\Requests\SearchDishesRequest;
 use App\Models\Dish;
 use App\Http\Requests\StoreDishRequest;
@@ -114,5 +115,28 @@ class DishController extends Controller
         return response()->json([
             'message' => 'The dish was deleted successfully.',
         ]);
+    }
+
+    public function rate(RateDishRequest $request, Dish $dish): JsonResponse
+    {
+        $user = $request->user();
+
+        // Check if the user has already rated this dish
+        if ($user->ratings()->where('dish_id', $dish->id)->exists()) {
+            return response()->json([
+                'message' => 'You have already rated this dish.'
+            ], 403);
+        }
+
+        // Create the rating
+        $rating = $user->ratings()->create([
+            'dish_id' => $dish->id,
+            'rating' => $request->input('rating'),
+        ]);
+
+        return response()->json([
+            'message' => 'Rating submitted successfully.',
+            'rating' => $rating,
+        ], 201);
     }
 }

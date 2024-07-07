@@ -5,21 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Dish extends Model
+class Rating extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'image_url', 'price'];
+    protected $fillable = ['user_id', 'dish_id', 'rating'];
 
-    public function user(): BelongsTo
+    public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function ratings(): HasMany
+    public function dish() : BelongsTo
     {
-        return $this->hasMany(Rating::class);
+        return $this->belongsTo(Dish::class);
     }
 }

@@ -52,6 +52,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Dish::class);
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
