@@ -33,8 +33,13 @@ class DishController extends Controller
         if($request->filled('description')) {
             $query->where('description', 'like', "%{$request->input('description')}%");
         }
+        
+        $limit = $request->input('limit', 15);
+        $offset = $request->input('offset', 1);
 
-        return DishResource::collection($query->paginate());
+        $dishes = $query->paginate($limit, ['*'], 'page', $offset);
+
+        return DishResource::collection($dishes);
     }
 
     /**

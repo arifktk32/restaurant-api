@@ -25,6 +25,8 @@ class SearchDishesRequest extends FormRequest
         return [
             'name' => 'sometimes|string|max:255',
             'description' => 'sometimes|string|max:255',
+            'limit' => 'sometimes|integer|min:0|max:100',
+            'offset' => 'sometimes|integer|min:0',
         ];
     }
 }
