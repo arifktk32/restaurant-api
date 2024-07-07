@@ -48,7 +48,7 @@ class DishPolicy
      */
     public function delete(User $user, Dish $dish): bool
     {
-        //
+        return $user->id == $dish->user_id;
     }
 
     /**
@@ -56,7 +56,7 @@ class DishPolicy
      */
     public function restore(User $user, Dish $dish): bool
     {
-        //
+        return $user->id == $dish->user_id;
     }
 
     /**
@@ -64,6 +64,6 @@ class DishPolicy
      */
     public function forceDelete(User $user, Dish $dish): bool
     {
-        //
+        return $user->id == $dish->user_id;
     }
 }

@@ -107,6 +107,8 @@ class DishController extends Controller
      */
     public function destroy(Dish $dish): JsonResponse
     {
+        $this->authorize('delete', $dish);
+
         $dish->delete();
 
         return response()->json([
