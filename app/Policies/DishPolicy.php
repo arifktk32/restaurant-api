@@ -40,7 +40,7 @@ class DishPolicy
      */
     public function update(User $user, Dish $dish): bool
     {
-        //
+        return $user->id == $dish->user_id;
     }
 
     /**

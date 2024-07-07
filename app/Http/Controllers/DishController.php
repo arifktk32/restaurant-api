@@ -95,6 +95,8 @@ class DishController extends Controller
      */
     public function update(UpdateDishRequest $request, Dish $dish): JsonResource
     {
+        $this->authorize('update', $dish);
+        
         $dish->update($request->validated());
 
         return new DishResource($dish);
