@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Dish;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateDishRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateDishRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,13 @@ class UpdateDishRequest extends FormRequest
      */
     public function rules(): array
     {
+        $dishId = $this->route('dish')->id;
+
         return [
-            //
+            'name' => 'sometimes|string|max:255|unique:dishes,name,' . $dishId,
+            'description' => 'sometimes|string|max:255|unique:dishes,description,' . $dishId,
+            'image_url' => 'sometimes|url|max:255',
+            'price' => 'sometimes|numeric|min:0',
         ];
     }
 }

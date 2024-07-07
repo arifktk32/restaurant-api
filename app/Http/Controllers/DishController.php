@@ -93,9 +93,11 @@ class DishController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDishRequest $request, Dish $dish)
+    public function update(UpdateDishRequest $request, Dish $dish): JsonResource
     {
-        //
+        $dish->update($request->validated());
+
+        return new DishResource($dish);
     }
 
     /**
