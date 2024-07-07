@@ -116,4 +116,50 @@ it('validates the search parameters', function () {
              ->assertJsonValidationErrors(['name']);
 });
 
+it('can limit the number of dishes returned', function () {
+    $this->actingAs($this->user);
 
+    $response = $this->getJson(route('dishes.index', ['limit' => 2]));
+
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'name',
+                    'description',
+                    'image_url',
+                    'price',
+                ]
+            ],
+            'links',
+            'meta'
+        ])
+        ->assertJsonCount(2, 'data');
+});
+
+it('can apply offset to the number of dishes returned', function () {
+    $this->actingAs($this->user);
+
+    Dish::factory()->count(20)->create();
+
+    $response = $this->getJson(route('dishes.index', ['limit' => 5, 'offset' => 2]));
+
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'name',
+                    'description',
+                    'image_url',
+                    'price',
+                ]
+            ],
+            'links',
+            'meta'
+        ])
+        ->assertJsonCount(5, 'data')
+        ->assertJsonPath('meta.total', 24)
+        ->assertJsonFragment(['id' => 6])
+        ->assertJsonFragment(['id' => 10])
+        ->assertJsonMissingExact(['id' => 11]);
+});
